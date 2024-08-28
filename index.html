@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>React Practice1-Super Converter</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+  <script src="https://unpkg.com/react@17.0.2/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script type="text/babel">
+    const root = document.querySelector("#root");
+
+    const SelectPage = () => {
+      return (
+        <div>
+          <hr></hr>
+          <span>Please select your units.</span>
+        </div>
+      );
+    };
+
+    const MinutesToHours = () => {
+      const [amount, setAmount] = React.useState(0);
+      const [inverse, setInverse] = React.useState(false);
+      const onChange = (event) => {
+        setAmount(event.target.value);
+        console.log(amount);
+      };
+      const reset = () => {
+        setAmount(0);
+      };
+      const onInverse = () => {
+        setInverse((current) => !current);
+      };
+      return (
+        <div>
+          <h3>Minutes & Hours</h3>
+          <div>
+            <label for="minutes">Minutes </label>
+            <input
+              value={inverse ? amount * 60 : amount}
+              className="minutes"
+              type="number"
+              placeholder="1"
+              onChange={onChange}
+              disabled={inverse}
+            ></input>
+          </div>
+          <div>
+            <label for="hours">Hours </label>
+            <input
+              value={inverse ? amount : Math.round(amount / 60)}
+              className="hours"
+              type="number"
+              placeholder="1"
+              onChange={onChange}
+              disabled={!inverse}
+            ></input>
+          </div>
+          <button onClick={reset}>Reset</button>
+          <button onClick={onInverse}>{inverse ? "Back" : "Inverse"}</button>
+        </div>
+      );
+    };
+    const CmToInch = () => {
+      const [chInch, setCmInch] = React.useState(0);
+      const [inverse, setInverse] = React.useState(false);
+      const onChange = () => {
+        setCmInch(event.target.value);
+      };
+      const reset = () => {
+        setCmInch(0);
+      };
+
+      const onInverse = () => {
+        setInverse((current) => !current);
+      };
+
+      return (
+        <div>
+          <h3>Cm & Inch</h3>
+          <div>
+            <label for="cm">Centimeters </label>
+            <input
+              value={inverse ? chInch * 0.3937 : chInch}
+              className="cm"
+              type="number"
+              onChange={onChange}
+              disabled={inverse}
+            />
+          </div>
+          <div>
+            <label for="inch">Inches </label>
+            <input
+              value={inverse ? chInch : chInch / 0.3937}
+              className="inch"
+              type="number"
+              onChange={onChange}
+              disabled={!inverse}
+            />
+          </div>
+          <button onClick={reset}>Reset</button>
+          <button onClick={onInverse}>Inverse</button>
+        </div>
+      );
+    };
+
+    const App = () => {
+      const [index, setIndex] = React.useState("0");
+      const onSelect = (event) => {
+        setIndex(event.target.value);
+      };
+      return (
+        <div className="main">
+          <h1>Super Converter</h1>
+          <select value={index} onChange={onSelect}>
+            <option value="0">Select your units</option>
+            <option value="1">Minutes & Hours</option>
+            <option value="2">Cm & Inch</option>
+          </select>
+          {index === "0" ? <SelectPage /> : null}
+          {index === "1" ? <MinutesToHours /> : null}
+          {index === "2" ? <CmToInch /> : null}
+        </div>
+      );
+    };
+
+    ReactDOM.render(<App />, root);
+  </script>
+</html>
